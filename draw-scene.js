@@ -1,4 +1,4 @@
-function drawScene(gl, programInfo, buffers) {
+function drawScene(gl, programInfo, buffers,cameraRotation) {
     gl.clearColor(0.0, 0.0, 0.0, 1.0); // Clear to black, fully opaque
     gl.clearDepth(1.0); // Clear everything
     gl.enable(gl.DEPTH_TEST); // Enable depth testing
@@ -36,7 +36,11 @@ function drawScene(gl, programInfo, buffers) {
       modelViewMatrix, // matrix to translate
       [-0.0, 0.0, -6.0],
     ); // amount to translate
-  
+     mat4.rotate(
+      modelViewMatrix,
+      modelViewMatrix,
+      cameraRotation,[0,0,1]
+     );
     // Tell WebGL how to pull out the positions from the position
     // buffer into the vertexPosition attribute.
     setPositionAttribute(gl, buffers, programInfo);
@@ -52,6 +56,7 @@ function drawScene(gl, programInfo, buffers) {
       false,
       projectionMatrix,
     );
+    
     gl.uniformMatrix4fv(
       programInfo.uniformLocations.modelViewMatrix,
       false,

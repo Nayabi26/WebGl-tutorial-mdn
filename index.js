@@ -1,6 +1,9 @@
 import { initBuffers} from "./init-buffer.js";
 import { drawScene } from "./draw-scene.js";
 
+// VAriables which track the current rotation of the camera
+let cameraRotation=0.0;
+let deltaTime=0;
 main();
 
 function main(){
@@ -60,8 +63,19 @@ const programInfo = {
 const buffers = initBuffers(gl);
 
 // Draw the scene
-drawScene(gl, programInfo, buffers);
-
+//drawScene(gl, programInfo, buffers);
+let then=0;
+//Draw the scene repeatedly
+function render(now)
+{
+  now*=0.001 //convert into seconds
+  deltaTime= now-then;
+  then=now;
+  drawScene(gl,programInfo,buffers,cameraRotation);
+  cameraRotation+=deltaTime;
+  requestAnimationFrame(render);
+}
+requestAnimationFrame(render);
 }
 
 //intialising shader program
@@ -96,3 +110,15 @@ function loadShader(gl,type,source)
   return shader;
 
 }
+
+let then=0;
+//Draw the scene repeatedly
+/*function render(now)
+{
+  now*=0.001 //convert into seconds
+  deltaTime= now-then;
+  then=now;
+  drawScene(gl,programInfo,buffers,cameraRotation);
+  cameraRotation+=deltaTime;
+  requestAnimationFrame(render);
+}*/
