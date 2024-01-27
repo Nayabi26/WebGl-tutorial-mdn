@@ -2,7 +2,8 @@ import { initBuffers} from "./init-buffer.js";
 import { drawScene } from "./draw-scene.js";
 
 // VAriables which track the current rotation of the camera
-let cameraRotation=0.0;
+let cubeRotation = 0.0;
+
 let deltaTime=0;
 main();
 
@@ -71,8 +72,8 @@ function render(now)
   now*=0.001 //convert into seconds
   deltaTime= now-then;
   then=now;
-  drawScene(gl,programInfo,buffers,cameraRotation);
-  cameraRotation+=deltaTime;
+  drawScene(gl,programInfo,buffers,cubeRotation);
+  cubeRotation+=deltaTime;
   requestAnimationFrame(render);
 }
 requestAnimationFrame(render);
