@@ -1,4 +1,4 @@
-function drawScene(gl, programInfo, buffers,cameraRotation) {
+function drawScene(gl, programInfo, buffers,cubeRotation) {
     gl.clearColor(0.0, 0.0, 0.0, 1.0); // Clear to black, fully opaque
     gl.clearDepth(1.0); // Clear everything
     gl.enable(gl.DEPTH_TEST); // Enable depth testing
@@ -36,17 +36,34 @@ function drawScene(gl, programInfo, buffers,cameraRotation) {
       modelViewMatrix, // matrix to translate
       [-0.0, 0.0, -6.0],
     ); // amount to translate
-     mat4.rotate(
-      modelViewMatrix,
-      modelViewMatrix,
-      cameraRotation,[0,0,1]
-     );
-    // Tell WebGL how to pull out the positions from the position
+    mat4.rotate(
+      modelViewMatrix, // destination matrix
+      modelViewMatrix, // matrix to rotate
+      cubeRotation, // amount to rotate in radians
+      [0, 0, 1],
+    ); // axis to rotate around (Z)
+    mat4.rotate(
+      modelViewMatrix, // destination matrix
+      modelViewMatrix, // matrix to rotate
+      cubeRotation * 0.7, // amount to rotate in radians
+      [0, 1, 0],
+    ); // axis to rotate around (Y)
+    mat4.rotate(
+      modelViewMatrix, // destination matrix
+      modelViewMatrix, // matrix to rotate
+      cubeRotation * 0.3, // amount to rotate in radians
+      [1, 0, 0],
+    ); // axis to rotate around (X)
+    
+    // Tell WebGL how to pull out the positions from the positionhhh
     // buffer into the vertexPosition attribute.
     setPositionAttribute(gl, buffers, programInfo);
     // Tell WebGL how to pull out the colors from the color
     // buffer into the vertexColor attribute.
     setColorAttribute(gl,buffers,programInfo);
+    // Tell WebGL which indices to use to index the vertices
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.indices);
+
     // Tell WebGL to use our program when drawing
     gl.useProgram(programInfo.program);
   
@@ -64,16 +81,18 @@ function drawScene(gl, programInfo, buffers,cameraRotation) {
     );
   
     {
+      const vertexCount = 36;
+      const type = gl.UNSIGNED_SHORT;
       const offset = 0;
-      const vertexCount = 4;
-      gl.drawArrays(gl.TRIANGLE_STRIP, offset, vertexCount);
+      gl.drawElements(gl.TRIANGLES, vertexCount, type, offset);
     }
+    
   }
   
   // Tell WebGL how to pull out the positions from the position
   // buffer into the vertexPosition attribute.
   function setPositionAttribute(gl, buffers, programInfo) {
-    const numComponents = 2; // pull out 2 values per iteration
+    const numComponents = 3; // pull out 3 values per iteration
     const type = gl.FLOAT; // the data in the buffer is 32bit floats
     const normalize = false; // don't normalize
     const stride = 0; // how many bytes to get from one set of values to the next
