@@ -6,5 +6,5 @@ Mdn tutorial introduce webgl
 into the vertexColor attribute.**
 - [x] Animate Object with Webgl - **Making the square rotate But actually we are rotating the camera**
 - [x] Craeting 3D objects using -- **Define's positions of the  cube's vertices  Define the vertices color  Define the element array  Drawing the cube**
-- [ ] Using Textures in Webgl- **Loading textures . Mapping the textures to the faces .Updated shaders.Drawing the texture cube.Cross-domain texture**
+- [x] Using Textures in Webgl- **Loading textures . Mapping the textures to the faces .Updated shaders.Drawing the texture cube.Cross-domain texture**
       
